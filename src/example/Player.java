@@ -1,6 +1,6 @@
 package example;
 
-public class Player extends SimpleSlickGame{
+public class Player extends BreakoutGame{
 
 	public Player(String gamename) {
 		super(gamename);
