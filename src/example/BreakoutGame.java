@@ -20,6 +20,7 @@ public class BreakoutGame extends BasicGame
 	
 	// Declaring a player of the Player class.
 	private Player player;
+	private Obstacle obstacle;
 	
 	public BreakoutGame(String gamename)
 	{
@@ -32,6 +33,7 @@ public class BreakoutGame extends BasicGame
 		x = (windowWidth-100)/2;
 		y = windowHeight-40;
 		player = new Player(x,y,100,25);
+		obstacle = new Obstacle(50,50);
 
 	}
 
@@ -39,7 +41,7 @@ public class BreakoutGame extends BasicGame
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException {
 		player.position(x, y);
-
+		obstacle.position(50, 50);
 		Input input = gc.getInput();
 		
 		// Checks if the left arrow key is pressed down and makes sure that we cannot move out of the left side of the window.
@@ -59,6 +61,7 @@ public class BreakoutGame extends BasicGame
 	{
 		g.drawString("Hello World!", 250, 200);
 		player.render(gc,g);
+		obstacle.render(gc,g);
 	}
 
 	// This is the first method that runs when you start the program.
