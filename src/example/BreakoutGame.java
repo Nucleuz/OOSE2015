@@ -45,12 +45,12 @@ public class BreakoutGame extends BasicGame
 		Input input = gc.getInput();
 		
 		// Checks if the left arrow key is pressed down and makes sure that we cannot move out of the left side of the window.
-		if(input.isKeyDown(Input.KEY_LEFT) && x >= 0-50){
+		if(input.isKeyDown(Input.KEY_LEFT) && x >= 0){
 			x -= 0.4 * i;
 		}
 		
 		// Checks if the right arrow key is pressed down and makes sure that we cannot move out of the right side of the window.
-		if(input.isKeyDown(Input.KEY_RIGHT) && x <= windowWidth-50){
+		if(input.isKeyDown(Input.KEY_RIGHT) && x <= windowWidth-100){
 			x += 0.4 * i;
 		}
 	}
