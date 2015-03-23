@@ -21,6 +21,7 @@ public class BreakoutGame extends BasicGame
 	// Declaring a player of the Player class.
 	private Player player;
 	private Obstacle obstacle;
+	private Obstacle[] obstacles = new Obstacle[43];
 	
 	public BreakoutGame(String gamename)
 	{
@@ -33,8 +34,13 @@ public class BreakoutGame extends BasicGame
 		x = (windowWidth-100)/2;
 		y = windowHeight-40;
 		player = new Player(x,y,100,25);
-		obstacle = new Obstacle(50,50);
-
+		obstacle = new Obstacle(50,25);
+		
+		// For
+		for(int i = 0; i<obstacles.length; i++){
+			obstacles[i] = new Obstacle(50, 25);
+			
+		}
 	}
 
 	// This method runs every frame (just like Unity's Update method)
@@ -42,6 +48,18 @@ public class BreakoutGame extends BasicGame
 	public void update(GameContainer gc, int i) throws SlickException {
 		player.position(x, y);
 		obstacle.position(50, 50);
+		
+		int tempX = 100;
+		int tempY = 50;
+		for(int j=0; j < obstacles.length; j++){
+			obstacles[j].position(tempX, tempY);
+			tempX += 50;
+			if(tempX >= 600){
+				tempX = 50;
+				tempY += 25;
+			}
+		}
+		
 		Input input = gc.getInput();
 		
 		// Checks if the left arrow key is pressed down and makes sure that we cannot move out of the left side of the window.
@@ -62,6 +80,10 @@ public class BreakoutGame extends BasicGame
 		g.drawString("Hello World!", 250, 200);
 		player.render(gc,g);
 		obstacle.render(gc,g);
+		
+		for (int i = 0; i< obstacles.length; i++){
+			obstacles[i].render(gc, g);
+		}
 	}
 
 	// This is the first method that runs when you start the program.
