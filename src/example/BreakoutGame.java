@@ -21,6 +21,7 @@ public class BreakoutGame extends BasicGame
 	// Declaring a player of the Player class.
 	private Player player;
 	private Obstacle obstacle;
+	private Ball ball;
 	private Obstacle[] obstacles = new Obstacle[43];
 	
 	public BreakoutGame(String gamename)
@@ -34,6 +35,7 @@ public class BreakoutGame extends BasicGame
 		x = (windowWidth-100)/2;
 		y = windowHeight-40;
 		player = new Player(x,y,100,25);
+		ball = new Ball(x,y,200,25);
 		obstacle = new Obstacle(50,25);
 		
 		// For
@@ -48,7 +50,7 @@ public class BreakoutGame extends BasicGame
 	public void update(GameContainer gc, int i) throws SlickException {
 		player.position(x, y);
 		obstacle.position(50, 50);
-		
+		ball.position(200, 200);
 		int tempX = 100;
 		int tempY = 50;
 		for(int j=0; j < obstacles.length; j++){
@@ -80,7 +82,7 @@ public class BreakoutGame extends BasicGame
 		g.drawString("Hello World!", 250, 200);
 		player.render(gc,g);
 		obstacle.render(gc,g);
-		
+		ball.render(gc, g);
 		for (int i = 0; i< obstacles.length; i++){
 			obstacles[i].render(gc, g);
 		}
