@@ -13,7 +13,12 @@ public class Obstacle {
 	}
 	
 	public void render(GameContainer gc, Graphics g) throws SlickException{
+		g.setColor(Color.white);
 		g.drawRect(x,y,width,height);
+		
+		g.setColor(Color.red);
+		g.fillRect(x+1,y+1,width-1,height-1);
+
 	}
 	
 	public float getX() {	return x;}

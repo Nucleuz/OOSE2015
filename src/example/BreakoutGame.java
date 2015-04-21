@@ -22,7 +22,7 @@ public class BreakoutGame extends BasicGame
 	private Player player;
 	private Obstacle obstacle;
 	private Ball ball;
-	private Obstacle[] obstacles = new Obstacle[43];
+	private Obstacle[] obstacles = new Obstacle[49];
 	
 	public BreakoutGame(String gamename)
 	{
@@ -51,14 +51,14 @@ public class BreakoutGame extends BasicGame
 		player.position(x, y);
 		obstacle.position(50, 50);
 		ball.position(200, 200);
-		int tempX = 100;
+		int tempX = 100+5;
 		int tempY = 50;
 		for(int j=0; j < obstacles.length; j++){
 			obstacles[j].position(tempX, tempY);
-			tempX += 50;
-			if(tempX >= 600){
+			tempX += 50+5;
+			if(tempX >= 550){
 				tempX = 50;
-				tempY += 25;
+				tempY += 25+5;
 			}
 		}
 		
