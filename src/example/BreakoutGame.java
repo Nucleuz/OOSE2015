@@ -8,6 +8,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.geom.Vector2f;
 
 public class BreakoutGame extends BasicGame
 {
@@ -23,6 +24,7 @@ public class BreakoutGame extends BasicGame
 	private Obstacle obstacle;
 	private Ball ball;
 	private Obstacle[] obstacles = new Obstacle[49];
+
 	
 	public BreakoutGame(String gamename)
 	{
@@ -35,9 +37,8 @@ public class BreakoutGame extends BasicGame
 		x = (windowWidth-100)/2;
 		y = windowHeight-40;
 		player = new Player(x,y,100,25);
-		ball = new Ball(x,y,200,25);
 		obstacle = new Obstacle(50,25);
-		
+		ball = new Ball(new Vector2f(100,100), new Vector2f(500,100));
 		// For
 		for(int i = 0; i<obstacles.length; i++){
 			obstacles[i] = new Obstacle(50, 25);
@@ -50,7 +51,7 @@ public class BreakoutGame extends BasicGame
 	public void update(GameContainer gc, int i) throws SlickException {
 		player.position(x, y);
 		obstacle.position(50, 50);
-		ball.position(200, 200);
+		ball.update(i);
 		int tempX = 100+5;
 		int tempY = 50;
 		for(int j=0; j < obstacles.length; j++){
@@ -87,6 +88,7 @@ public class BreakoutGame extends BasicGame
 			obstacles[i].render(gc, g);
 		}
 	}
+	
 
 	// This is the first method that runs when you start the program.
 	public static void main(String[] args)
