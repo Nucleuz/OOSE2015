@@ -12,6 +12,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 
+import com.sun.java.swing.plaf.windows.WindowsOptionPaneUI;
+
 public class BreakoutGame extends BasicGame
 {
 	// Declaring two variables for width and Height of the game window
@@ -26,6 +28,7 @@ public class BreakoutGame extends BasicGame
 	private Ball ball;
 	private Obstacle[] obstacles = new Obstacle[66];
 	private Obstacle[] movingObstacles = new Obstacle[2];
+	private float brickSpeed = 0.3f;
 
 	// Declaring images for graphics
 	private Image playerImg;
@@ -51,10 +54,15 @@ public class BreakoutGame extends BasicGame
 		player = new Player(x,y,100,25);
 		ball = new Ball(new Vector2f(100,100), new Vector2f(500,100));
 		
-		// Initializing all obstacles and set the width and height
+		// Initializing all static obstacles and setting the width and height
 		for(int i = 0; i<obstacles.length; i++){
 			obstacles[i] = new Obstacle(50, 17);
 			
+		}
+		
+		// Initializing all moving obstacles and setting the width and height
+		for(int i = 0; i < movingObstacles.length; i++){
+			movingObstacles[i] = new Obstacle(50, 17);
 		}
 		
 		// Initializing images
@@ -64,16 +72,10 @@ public class BreakoutGame extends BasicGame
 		brickYellow = new Image("images/yellow_brick.png");
 		brickGreen = new Image("images/green_brick.png");
 		brickSteel = new Image("images/steel_brick.png");
-
-	}
-
-	// This method runs every frame (just like Unity's Update method)
-	@Override
-	public void update(GameContainer gc, int i) throws SlickException {
-		player.position(x, y);
-		ball.update(i);
+		
 		int tempX = 50;
 		int tempY = 50;
+		
 		for(int j=0; j < obstacles.length; j++){
 			obstacles[j].position(tempX, tempY);
 			tempX += 50;
@@ -82,6 +84,31 @@ public class BreakoutGame extends BasicGame
 				tempY += 17;
 			}
 		}
+		
+		for(int j = 0; j < movingObstacles.length; j++){
+			if (j < 1 )
+				movingObstacles[j].position(windowWidth-100, 200);
+			if ( j > 0)
+				movingObstacles[j].position(50, 200);
+		}
+	}
+
+	// This method runs every frame (just like Unity's Update method)
+	@Override
+	public void update(GameContainer gc, int i) throws SlickException {
+		player.position(x, y);
+		ball.update(i);
+		
+		// Moves the left brick
+		movingObstacles[0].x += brickSpeed;
+		if(movingObstacles[0].x <= 0 || movingObstacles[0].x >= windowWidth-50)
+			brickSpeed *= -1;
+		
+		// Moves the right brick
+		movingObstacles[1].x -= brickSpeed;
+		if(movingObstacles[1].x <= 0 || movingObstacles[1].x >= windowWidth-50)
+			brickSpeed *= -1;
+
 		
 		Input input = gc.getInput();
 		
@@ -117,7 +144,7 @@ public class BreakoutGame extends BasicGame
 		// Go through the position of all the obstacles and draw the appropriate image in its position.
 		for(int i = 0; i < obstacles.length; i++){
 			if(obstacles[i].y > 30 && obstacles[i].y < 70){
-				brickBrick.draw(obstacles[i].x,obstacles[i].y);
+				brickYellow.draw(obstacles[i].x,obstacles[i].y);
 			}
 			
 			if(obstacles[i].y > 70 && obstacles[i].y < 110){
@@ -125,12 +152,12 @@ public class BreakoutGame extends BasicGame
 			}
 			
 			if(obstacles[i].y > 110 && obstacles[i].y < 150){
-				brickYellow.draw(obstacles[i].x,obstacles[i].y);
+				brickBrick.draw(obstacles[i].x,obstacles[i].y);
 			}
-			
-			if(obstacles[i].y > 150){
-				brickSteel.draw(obstacles[i].x,obstacles[i].y);
-			}
+		}
+		
+		for(int i = 0; i < movingObstacles.length; i++){
+				brickSteel.draw(movingObstacles[i].x,movingObstacles[i].y);
 		}
 	}
 	
