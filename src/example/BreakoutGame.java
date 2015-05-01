@@ -73,6 +73,7 @@ public class BreakoutGame extends BasicGame
 		brickGreen = new Image("images/green_brick.png");
 		brickSteel = new Image("images/steel_brick.png");
 		
+		// Declaring and initializing tempX and tempY for where the first brick will spawn
 		int tempX = 50;
 		int tempY = 50;
 		
