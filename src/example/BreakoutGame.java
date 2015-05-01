@@ -42,6 +42,7 @@ public class BreakoutGame extends BasicGame
 	public BreakoutGame(String gamename)
 	{
 		super(gamename);
+		
 	}
 
 	// This method runs before the game starts.
@@ -52,7 +53,7 @@ public class BreakoutGame extends BasicGame
 		
 		// Initializing player and ball
 		player = new Player(x,y,100,25);
-		ball = new Ball(new Vector2f(100,100), new Vector2f(500,100));
+		ball = new Ball(new Vector2f(windowWidth/2,windowHeight-50), new Vector2f(0,-150));
 		
 		// Initializing all static obstacles and setting the width and height
 		for(int i = 0; i<obstacles.length; i++){
@@ -141,6 +142,7 @@ public class BreakoutGame extends BasicGame
 		// Set color of ball and fill it with fillOval
 		g.setColor(Color.red);
 		g.fillOval(ball.pos.getX()-10,ball.pos.getY()-20,20,20);
+		
 		
 		// Go through the position of all the obstacles and draw the appropriate image in its position.
 		for(int i = 0; i < obstacles.length; i++){
