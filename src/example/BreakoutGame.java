@@ -28,7 +28,7 @@ public class BreakoutGame extends BasicGame
 	private Ball ball;
 	private Obstacle[] obstacles = new Obstacle[66];
 	private Obstacle[] movingObstacles = new Obstacle[2];
-	private float brickSpeed = 0.3f;
+	private float brickSpeed = 0.2f;
 
 	// Declaring images for graphics
 	private Image playerImg;
@@ -53,7 +53,7 @@ public class BreakoutGame extends BasicGame
 		
 		// Initializing player and ball
 		player = new Player(x,y,100,25);
-		ball = new Ball(new Vector2f(windowWidth/2,windowHeight-50), new Vector2f(0,-150));
+		ball = new Ball(windowWidth/2, windowHeight-150);
 		
 		// Initializing all static obstacles and setting the width and height
 		for(int i = 0; i<obstacles.length; i++){
@@ -99,7 +99,17 @@ public class BreakoutGame extends BasicGame
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException {
 		player.position(x, y);
-		ball.update(i);
+
+		ball.x += ball.dx;
+		ball.y += ball.dy;
+		
+		// Changes the vertical direction of the ball
+		if(ball.y < 0 || ball.y > windowHeight - ball.radius)
+			ball.dy *= -1;
+		
+		// Changes the horizontal direction of the ball
+		if(ball.x < 0 || ball.x > windowWidth - ball.radius)
+			ball.dx *= -1;
 		
 		// Moves the left brick
 		movingObstacles[0].x += brickSpeed;
@@ -141,7 +151,8 @@ public class BreakoutGame extends BasicGame
 		
 		// Set color of ball and fill it with fillOval
 		g.setColor(Color.red);
-		g.fillOval(ball.pos.getX()-10,ball.pos.getY()-20,20,20);
+		//g.fillOval(ball.pos.getX()-10,ball.pos.getY()-20,20,20);
+		g.fillOval(ball.x,ball.y,ball.width,ball.height);
 		
 		
 		// Go through the position of all the obstacles and draw the appropriate image in its position.
