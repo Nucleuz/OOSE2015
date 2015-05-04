@@ -1,25 +1,24 @@
 package example;
 
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
+
 public class Player{
 
-	public float x1, y1, x2, y2;
-	private float width, height;
+//	public Shape rect;
+	public int x, y;
+	public int width, height;
 
 	
-	public Player(float x1, float y1, float x2, float y2) {
-		this.x1 = x1;
-		this.y1 = y1;
-		this.x2 = x2;
-		this.y2 = y2;
-		width = x2-x1;
-		height = y2-y1;
+	public Player(int x, int y, int width, int height) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+//		this.x2 = x2;
+//		this.y2 = y2;
+//		width = x2-x1;
+//		height = y2-y1;
+//		rect = new Rectangle(x, y, width, height);
 	}
-	
-	public void position(float x, float y){
-		x1 = x;
-		y1 = y;
-		x2 = x + width;
-		y2 = y+height;
-	}
-
 }
