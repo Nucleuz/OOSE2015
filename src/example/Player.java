@@ -1,24 +1,26 @@
 package example;
 
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
 
 public class Player{
 
-//	public Shape rect;
 	public int x, y;
 	public int width, height;
+	private Image playerImg;
 
 	
-	public Player(int x, int y, int width, int height) {
+	public Player(int x, int y, int width, int height) throws SlickException {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-//		this.x2 = x2;
-//		this.y2 = y2;
-//		width = x2-x1;
-//		height = y2-y1;
-//		rect = new Rectangle(x, y, width, height);
+		playerImg = new Image("images/player1.png");
+	}
+	
+	public void render(Graphics g) throws SlickException{
+		playerImg.draw(x,y);
 	}
 }

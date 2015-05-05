@@ -1,5 +1,6 @@
 package example;
 import java.io.Console;
+
 import java.security.cert.CertPathChecker;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,10 +31,10 @@ public class BreakoutGame extends BasicGame
 	private Ball ball;
 	private Obstacle[] obstacles = new Obstacle[66];
 	private Obstacle[] movingObstacles = new Obstacle[2];
-	private float brickSpeed = 0.1f;
+	private float brickSpeed = 0.07f;
 
 	// Declaring images for graphics
-	private Image playerImg;
+	//private Image playerImg;
 	
 	private Image brickBrick;
 	private Image brickYellow;
@@ -55,7 +56,7 @@ public class BreakoutGame extends BasicGame
 		y = windowHeight-40;
 		
 		// Initializing player and ball
-		player = new Player(x,y,100,25);
+		player = new Player(x,y,96,25);
 		ball = new Ball(windowWidth/2, windowHeight-150, 10, 10);
 		
 		// Initializing all static obstacles and setting the width and height
@@ -70,7 +71,7 @@ public class BreakoutGame extends BasicGame
 		}
 		
 		// Initializing images
-		playerImg = new Image("images/player.png");
+		//playerImg = new Image("images/player.png");
 		
 		brickBrick = new Image("images/brick_brick.png");
 		brickYellow = new Image("images/yellow_brick.png");
@@ -131,22 +132,57 @@ public class BreakoutGame extends BasicGame
 			brickSpeed *= -1;
 
 		for(int j = 0; j < obstacles.length; j++){
-			if(ball.y < obstacles[j].y || ball.x < obstacles[j].x || ball.x > obstacles[j].x+obstacles[j].width || ball.y > obstacles[j].y+obstacles[j].height){
+			if(ball.y+5 < obstacles[j].y || ball.x+5 < obstacles[j].x || ball.x-5 > obstacles[j].x+obstacles[j].width || ball.y-5 > obstacles[j].y+obstacles[j].height){
 				checkCollision = false;
 			} else{
 				checkCollision = true;
-				System.out.println("Hit obstacle");
-				ball.dy *= -1;
+				if(ball.y > obstacles[j].y+obstacles[j].height){
+					System.out.println("Hit from below");
+					ball.dy *= -1;
+				}
+				
+				if(ball.y < obstacles[j].y){
+					System.out.println("Hit from above");
+					ball.dy *= -1;
+				}
+				
+				if(ball.x < obstacles[j].x){
+					System.out.println("Hit on the left");
+					ball.dx *= -1;
+				}
+				
+				if(ball.x > obstacles[j].x+obstacles[j].width){
+					System.out.println("Hit on the right");
+					ball.dx *= -1;
+				}
 				obstacles[j].x = 9999;
 				obstacles[j].y = 9999;
 			}
 		}
 		
 		for(int k = 0; k < movingObstacles.length; k++){
-			if(ball.y < movingObstacles[k].y || ball.x < movingObstacles[k].x || ball.x > movingObstacles[k].x+movingObstacles[k].width || ball.y > movingObstacles[k].y+movingObstacles[k].height){
+			if(ball.y+5 < movingObstacles[k].y || ball.x+5 < movingObstacles[k].x || ball.x-5 > movingObstacles[k].x+movingObstacles[k].width || ball.y-5 > movingObstacles[k].y+movingObstacles[k].height){
 				checkCollision = false;
 			} else{
-				ball.dy *= -1;
+				if(ball.y > movingObstacles[k].y+movingObstacles[k].height){
+					System.out.println("Hit from below");
+					ball.dy *= -1;
+				}
+				
+				if(ball.y < movingObstacles[k].y){
+					System.out.println("Hit from above");
+					ball.dy *= -1;
+				}
+				
+				if(ball.x < movingObstacles[k].x){
+					System.out.println("Hit on the left");
+					ball.dx *= -1;
+				}
+				
+				if(ball.x > movingObstacles[k].x+movingObstacles[k].width){
+					System.out.println("Hit on the right");
+					ball.dx *= -1;
+				}
 			}
 		}
 		
@@ -162,30 +198,45 @@ public class BreakoutGame extends BasicGame
 //			ball.dy *= -1;
 //		}
 		
-		if(ball.y < player.y || ball.x < player.x || ball.x > player.x+player.width || ball.y > player.y+player.height){
+		if(ball.y+5 < player.y || ball.x+5 < player.x || ball.x-5 > player.x+player.width || ball.y-5 > player.y+player.height){
 		checkCollision = false;
 	} else{
-		System.out.println("Collision! !!! ");
-		checkCollision = true;
-		ball.dy *= -1;
+		if(ball.y > player.y+player.height){
+			System.out.println("Hit from below");
+			ball.dy *= -1;
+		}
+		
+		if(ball.y < player.y){
+			System.out.println("Hit from above");
+			ball.dy *= -1;
+		}
+		
+		if(ball.x < player.x){
+			System.out.println("Hit on the left");
+			ball.dx *= -1;
+		}
+		
+		if(ball.x > player.x+player.width){
+			System.out.println("Hit on the right");
+			ball.dx *= -1;
+		}
 	}
-		
-		
-		
-		
+
 		Input input = gc.getInput();
 //		ball.x = input.getMouseX();
 //		ball.y = input.getMouseY();
 		
 		// Checks if the left arrow key is pressed down and makes sure that we cannot move out of the left side of the window.
-		if(input.isKeyDown(Input.KEY_LEFT) && player.x >= 0){
-			player.x -= 1 * i;
-		}
+//		if(input.isKeyDown(Input.KEY_LEFT) && player.x >= 0){
+//			player.x -= 1 * i;
+//		}
+		
+		player.x = input.getMouseX() - player.width/2;
 		
 		// Checks if the right arrow key is pressed down and makes sure that we cannot move out of the right side of the window.
-		if(input.isKeyDown(Input.KEY_RIGHT) && player.x <= windowWidth-100){
-			player.x += 1 * i;
-		}
+//		if(input.isKeyDown(Input.KEY_RIGHT) && player.x <= windowWidth-100){
+//			player.x += 1 * i;
+//		}
 	}
 
 	// This is used to render things, like drawing on the game window.
@@ -200,18 +251,17 @@ public class BreakoutGame extends BasicGame
 		g.setBackground(Color.lightGray);
 		
 		// Draw the player image in the player's position
-		playerImg.draw(player.x,player.y);
+		//playerImg.draw(player.x,player.y);
+		player.render(g);
 		
+		ball.render(g);
 		// Set color of ball and fill it with fillOval
 		g.setColor(Color.red);
 		//g.fillOval(ball.pos.getX()-10,ball.pos.getY()-20,20,20);
-		g.fillOval(ball.x,ball.y,ball.widthSize,ball.heightSize);
+		//g.fillOval(ball.x-5,ball.y-5,ball.widthSize,ball.heightSize);
 		
 		// Use to draw a rectangle on player... Used it for testing collision.
 		//g.fillRect(player.x, player.y, player.width, player.height);
-		
-		g.drawString("Collides: " + checkCollision, windowWidth/2, windowHeight/2);
-		
 		
 		// Go through the position of all the obstacles and draw the appropriate image in its position.
 		for(int i = 0; i < obstacles.length; i++){
@@ -230,8 +280,10 @@ public class BreakoutGame extends BasicGame
 		
 		for(int i = 0; i < movingObstacles.length; i++){
 				brickSteel.draw(movingObstacles[i].x,movingObstacles[i].y);
+				//g.fillRect(movingObstacles[i].x, movingObstacles[i].y, movingObstacles[i].width, movingObstacles[i].height);
 		}
 	}
+	
 
 	// This is the first method that runs when you start the program.
 	public static void main(String[] args)

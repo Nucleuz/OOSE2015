@@ -1,6 +1,6 @@
 package example;
 
-public class Obstacle {
+public class Obstacle{
 	public float x, y;
 	public int width, height;
 
@@ -10,9 +10,4 @@ public class Obstacle {
 		this.width = width;
 		this.height = height;
 	}
-	
-//	public void position(float x1, float y1){
-//		x = x1;
-//		y = y1;
-//	}
 }

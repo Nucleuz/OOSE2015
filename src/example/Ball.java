@@ -1,37 +1,33 @@
 package example;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
-
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 public class Ball {
-	
-//	public Shape rect;
 	
 	public float x,y;
 	
 	public int width, height;
 	
-	public float dx = 0.2f;
-	public float dy = 0.2f;
+	public float dx = 0.4f;
+	public float dy = 0.4f;
 	
 	public int widthSize = 10;
 	public int heightSize = 10;
 	public int radius = (widthSize + heightSize) / 2;
 	
-	public Ball(int x, int y, int width, int height){
+	private Image ballImg;
+	
+	public Ball(int x, int y, int width, int height) throws SlickException{
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-//		this.x2 = width;
-//		this.y2 = height;
-		
-//		width = width-x;
-//		height = height-y;
-		
-//		rect = new Rectangle(x,y,width,height);
+		ballImg = new Image("images/ball1.png");
+	}
+	
+	public void render(Graphics g) throws SlickException{
+		ballImg.draw(x-5,y-5);
 	}
 }
