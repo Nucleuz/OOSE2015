@@ -10,12 +10,14 @@ public class Ball {
 	
 	public int width, height;
 	
-	public float dx = 0.4f;
-	public float dy = 0.4f;
+	public float dx = 2f;
+	public float dy = 2f;
 	
 	public int widthSize = 10;
 	public int heightSize = 10;
 	public int radius = (widthSize + heightSize) / 2;
+	
+	public int ballsLeft = 3;
 	
 	private Image ballImg;
 	

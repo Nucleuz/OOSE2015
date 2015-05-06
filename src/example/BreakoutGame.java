@@ -31,7 +31,7 @@ public class BreakoutGame extends BasicGame
 	private Ball ball;
 	private Obstacle[] obstacles = new Obstacle[66];
 	private Obstacle[] movingObstacles = new Obstacle[2];
-	private float brickSpeed = 0.07f;
+	private float brickSpeed = 2f;
 
 	// Declaring images for graphics
 	//private Image playerImg;
@@ -112,13 +112,20 @@ public class BreakoutGame extends BasicGame
 		ball.y += ball.dy;
 		
 		// Changes the vertical direction of the ball
-		if(ball.y < 0 || ball.y > windowHeight - ball.radius){
+		if(ball.y < 0){
 			ball.dy *= -1;
 		}
 		
 		// Changes the horizontal direction of the ball
 		if(ball.x < 0 || ball.x > windowWidth - ball.radius){
 			ball.dx *= -1;
+		}
+		
+		// Makes sure that we decrease the "Balls left: " each time the player misses the ball
+		if(ball.y > windowHeight + 100){
+			ball.ballsLeft--;
+			ball.x = windowWidth/2;
+			ball.y = windowHeight/2;
 		}
 		
 		// Moves the left brick
@@ -250,6 +257,9 @@ public class BreakoutGame extends BasicGame
 		// Set background color
 		g.setBackground(Color.lightGray);
 		
+		// Draws the balls left
+		g.drawString("Balls left: " + ball.ballsLeft, windowWidth/2-60, 10);
+		
 		// Draw the player image in the player's position
 		//playerImg.draw(player.x,player.y);
 		player.render(g);
@@ -293,6 +303,7 @@ public class BreakoutGame extends BasicGame
 			AppGameContainer appgc;
 			appgc = new AppGameContainer(new BreakoutGame("Breakout by Hans & Mikkel"));
 			appgc.setDisplayMode(windowWidth, windowHeight, false);
+			appgc.setTargetFrameRate(120);
 			appgc.start();
 		}
 		catch (SlickException ex)
