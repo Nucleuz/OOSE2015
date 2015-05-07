@@ -17,7 +17,7 @@ public class Ball {
 	public int heightSize = 10;
 	public int radius = (widthSize + heightSize) / 2;
 	
-	public int ballsLeft = 3;
+	public int ballsLeft = 0;
 	
 	private Image ballImg;
 	

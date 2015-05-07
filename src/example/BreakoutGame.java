@@ -1,6 +1,5 @@
 package example;
 import java.io.Console;
-
 import java.security.cert.CertPathChecker;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +31,11 @@ public class BreakoutGame extends BasicGame
 	private Obstacle[] obstacles = new Obstacle[66];
 	private Obstacle[] movingObstacles = new Obstacle[2];
 	private float brickSpeed = 2f;
+	private static boolean isInMenu = true;
+	private static boolean isDead = false;
+	private Menu menu;
+	private Dead dead;
+	
 
 	// Declaring images for graphics
 	//private Image playerImg;
@@ -40,6 +44,7 @@ public class BreakoutGame extends BasicGame
 	private Image brickYellow;
 	private Image brickGreen;
 	private Image brickSteel;
+	//private Image Menu;
 	
 	private boolean checkCollision;
 	
@@ -54,10 +59,13 @@ public class BreakoutGame extends BasicGame
 	public void init(GameContainer gc) throws SlickException {
 		x = (windowWidth-100)/2;
 		y = windowHeight-40;
+				
 		
-		// Initializing player and ball
+		// Initializing player, ball, menu and dead
 		player = new Player(x,y,96,25);
 		ball = new Ball(windowWidth/2, windowHeight-150, 10, 10);
+		menu = new Menu(0,0);
+		dead = new Dead(0,0);
 		
 		// Initializing all static obstacles and setting the width and height
 		for(int i = 0; i<obstacles.length; i++){
@@ -72,7 +80,7 @@ public class BreakoutGame extends BasicGame
 		
 		// Initializing images
 		//playerImg = new Image("images/player.png");
-		
+		//Menu = new Image("images/Menu.png");
 		brickBrick = new Image("images/brick_brick.png");
 		brickYellow = new Image("images/yellow_brick.png");
 		brickGreen = new Image("images/green_brick.png");
@@ -107,7 +115,18 @@ public class BreakoutGame extends BasicGame
 	// This method runs every frame (just like Unity's Update method)
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException {
+		
+		//GameContainer gc1;
+		Input input1 = gc.getInput();
+		if(input1.isKeyPressed(Input.KEY_SPACE)){
+			isInMenu = false;
+			ball.ballsLeft = 3;
+			System.out.println("pressed");
+		}
 
+
+		//Checks if the game is in Menu, if it isn't, then run all the code below.
+		if(isInMenu == false){
 		ball.x += ball.dx;
 		ball.y += ball.dy;
 		
@@ -126,6 +145,14 @@ public class BreakoutGame extends BasicGame
 			ball.ballsLeft--;
 			ball.x = windowWidth/2;
 			ball.y = windowHeight/2;
+			
+			//If the player has 0 balls left, show "dead image", and wait for input,
+			//and give the player 3 new balls.
+			if(ball.ballsLeft == 0){
+				isInMenu = true;
+				isDead = true;
+				ball.ballsLeft = 3;
+			}
 		}
 		
 		// Moves the left brick
@@ -244,12 +271,28 @@ public class BreakoutGame extends BasicGame
 //		if(input.isKeyDown(Input.KEY_RIGHT) && player.x <= windowWidth-100){
 //			player.x += 1 * i;
 //		}
+		}
 	}
+
+	
 
 	// This is used to render things, like drawing on the game window.
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException
 	{
+		//Shows the menu
+		if(isInMenu == true){
+			menu.render(g);
+		}
+		
+		//If you have 0 balls left, show dead
+		if(isDead == true){
+			dead.render(g);
+		}
+		
+		//If you press space, render all of the objects
+		if(isInMenu == false){
+			isDead = false;
 		// Level indicator on top right corner
 		g.setColor(Color.white);
 		g.drawString("Level 1", windowWidth-85, 10);
@@ -263,10 +306,9 @@ public class BreakoutGame extends BasicGame
 		// Draw the player image in the player's position
 		//playerImg.draw(player.x,player.y);
 		player.render(g);
-		
 		ball.render(g);
 		// Set color of ball and fill it with fillOval
-		g.setColor(Color.red);
+		//g.setColor(Color.red);
 		//g.fillOval(ball.pos.getX()-10,ball.pos.getY()-20,20,20);
 		//g.fillOval(ball.x-5,ball.y-5,ball.widthSize,ball.heightSize);
 		
@@ -291,13 +333,26 @@ public class BreakoutGame extends BasicGame
 		for(int i = 0; i < movingObstacles.length; i++){
 				brickSteel.draw(movingObstacles[i].x,movingObstacles[i].y);
 				//g.fillRect(movingObstacles[i].x, movingObstacles[i].y, movingObstacles[i].width, movingObstacles[i].height);
+			}
 		}
 	}
 	
-
+//	public void Menu() throws SlickException{
+//			
+//			System.out.println("Show Menu!");
+//		
+//	}
+////
+////	public void Dead(){
+////		System.out.println("Your are dead!");
+////		
+////	}
 	// This is the first method that runs when you start the program.
 	public static void main(String[] args)
 	{
+		
+		
+		
 		try
 		{
 			AppGameContainer appgc;
