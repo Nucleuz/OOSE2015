@@ -7,11 +7,11 @@ import org.newdawn.slick.SlickException;
 
 public class Player{
 
-	private int x, y;
-	private int width, height;
+	// Declaring a few variables
+	private int x, y, width, height;
 	private Image playerImg;
 
-	
+	// Constructer
 	public Player(int x, int y, int width, int height) throws SlickException {
 		this.x = x;
 		this.y = y;
@@ -20,10 +20,12 @@ public class Player{
 		playerImg = new Image("images/player1.png");
 	}
 	
+	// render method for drawing the image of the player.
 	public void render(Graphics g) throws SlickException{
 		playerImg.draw(x,y);
 	}
 
+	// Getters and setters methods for the player.
 	public int getX() {
 		return x;
 	}
