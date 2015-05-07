@@ -29,7 +29,7 @@ public class BreakoutGame extends BasicGame
 	// Declaring a player of the Player class.
 	private Player player;
 	private Ball ball;
-	private Obstacle[] obstacles = new Obstacle[66];
+	private Obstacle[] obstacles = new Obstacle[91];
 	private Obstacle[] movingObstacles = new Obstacle[2];
 	private float brickSpeed = 2f;
 
@@ -61,7 +61,7 @@ public class BreakoutGame extends BasicGame
 		
 		// Initializing all static obstacles and setting the width and height
 		for(int i = 0; i<obstacles.length; i++){
-			obstacles[i] = new Obstacle(50,50,50, 17);
+			obstacles[i] = new Obstacle(0,0,50, 17);
 			
 		}
 		
@@ -81,15 +81,15 @@ public class BreakoutGame extends BasicGame
 		checkCollision = false;
 		
 		// Declaring and initializing tempX and tempY for where the first brick will spawn
-		int tempX = 50;
-		int tempY = 50;
+		int tempX = 0;
+		int tempY = 0;
 		
 		for(int j=0; j < obstacles.length; j++){
 			obstacles[j].x = tempX;
 			obstacles[j].y = tempY;
 			tempX += 50;
-			if(tempX >= 600){
-				tempX = 50;
+			if(tempX >= 650){
+				tempX = 0;
 				tempY += 17;
 			}
 		}
@@ -205,25 +205,25 @@ public class BreakoutGame extends BasicGame
 //			ball.dy *= -1;
 //		}
 		
-		if(ball.y+5 < player.y || ball.x+5 < player.x || ball.x-5 > player.x+player.width || ball.y-5 > player.y+player.height){
+		if(ball.y+5 < player.getY() || ball.x+5 < player.getX() || ball.x-5 > player.getX()+player.getWidth() || ball.y-5 > player.getY()+player.getHeight()){
 		checkCollision = false;
 	} else{
-		if(ball.y > player.y+player.height){
+		if(ball.y > player.getY()+player.getHeight()){
 			System.out.println("Hit from below");
 			ball.dy *= -1;
 		}
 		
-		if(ball.y < player.y){
+		if(ball.y < player.getY()){
 			System.out.println("Hit from above");
 			ball.dy *= -1;
 		}
 		
-		if(ball.x < player.x){
+		if(ball.x < player.getX()){
 			System.out.println("Hit on the left");
 			ball.dx *= -1;
 		}
 		
-		if(ball.x > player.x+player.width){
+		if(ball.x > player.getX()+player.getWidth()){
 			System.out.println("Hit on the right");
 			ball.dx *= -1;
 		}
@@ -234,15 +234,15 @@ public class BreakoutGame extends BasicGame
 //		ball.y = input.getMouseY();
 		
 		// Checks if the left arrow key is pressed down and makes sure that we cannot move out of the left side of the window.
-//		if(input.isKeyDown(Input.KEY_LEFT) && player.x >= 0){
-//			player.x -= 1 * i;
+//		if(input.isKeyDown(Input.KEY_LEFT) && player.getX() >= 0){
+//			player.getX() -= 1 * i;
 //		}
 		
-		player.x = input.getMouseX() - player.width/2;
+		player.setX(input.getMouseX() - player.getWidth()/2);
 		
 		// Checks if the right arrow key is pressed down and makes sure that we cannot move out of the right side of the window.
-//		if(input.isKeyDown(Input.KEY_RIGHT) && player.x <= windowWidth-100){
-//			player.x += 1 * i;
+//		if(input.isKeyDown(Input.KEY_RIGHT) && player.getX() <= windowWidth-100){
+//			player.getX() += 1 * i;
 //		}
 	}
 
@@ -261,7 +261,7 @@ public class BreakoutGame extends BasicGame
 		g.drawString("Balls left: " + ball.ballsLeft, windowWidth/2-60, 10);
 		
 		// Draw the player image in the player's position
-		//playerImg.draw(player.x,player.y);
+		//playerImg.draw(player.getX(),player.getY());
 		player.render(g);
 		
 		ball.render(g);
@@ -271,19 +271,19 @@ public class BreakoutGame extends BasicGame
 		//g.fillOval(ball.x-5,ball.y-5,ball.widthSize,ball.heightSize);
 		
 		// Use to draw a rectangle on player... Used it for testing collision.
-		//g.fillRect(player.x, player.y, player.width, player.height);
+		//g.fillRect(player.getX(), player.getY(), player.getWidth(), player.getHeight());
 		
 		// Go through the position of all the obstacles and draw the appropriate image in its position.
 		for(int i = 0; i < obstacles.length; i++){
-			if(obstacles[i].y > 30 && obstacles[i].y < 70){
+			if(obstacles[i].y >= 0 && obstacles[i].y < 70){
 				brickYellow.draw(obstacles[i].x,obstacles[i].y);
 			}
 			
-			if(obstacles[i].y > 70 && obstacles[i].y < 110){
+			if(obstacles[i].y > 50 && obstacles[i].y < 110){
 				brickGreen.draw(obstacles[i].x,obstacles[i].y);
 			}
 			
-			if(obstacles[i].y > 110 && obstacles[i].y < 150){
+			if(obstacles[i].y > 84 && obstacles[i].y < 150){
 				brickBrick.draw(obstacles[i].x,obstacles[i].y);
 			}
 		}

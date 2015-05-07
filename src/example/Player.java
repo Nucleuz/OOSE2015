@@ -7,8 +7,8 @@ import org.newdawn.slick.SlickException;
 
 public class Player{
 
-	public int x, y;
-	public int width, height;
+	private int x, y;
+	private int width, height;
 	private Image playerImg;
 
 	
@@ -23,4 +23,33 @@ public class Player{
 	public void render(Graphics g) throws SlickException{
 		playerImg.draw(x,y);
 	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+	
 }
