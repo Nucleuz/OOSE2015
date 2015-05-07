@@ -4,6 +4,7 @@ import java.security.cert.CertPathChecker;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.lwjgl.util.vector.Vector;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -13,8 +14,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Sound;
-import org.newdawn.slick.geom.Vector2f;
-
 import com.sun.java.swing.plaf.windows.WindowsOptionPaneUI;
 
 public class BreakoutGame extends BasicGame
@@ -92,9 +91,9 @@ public class BreakoutGame extends BasicGame
 		checkCollision = false;
 		
 		// Declaring and initializing tempX and tempY for where the first brick will spawn
+		//if(isDead == false || isInMenu == true){
 		int tempX = 50;
 		int tempY = 50;
-		
 		for(int j=0; j < obstacles.length; j++){
 			obstacles[j].setX(tempX);
 			obstacles[j].setY(tempY);
@@ -114,7 +113,7 @@ public class BreakoutGame extends BasicGame
 				movingObstacles[j].setY(200);
 		}
 	}
-
+	
 	// This method runs every frame (just like Unity's Update method)
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException {
@@ -149,8 +148,7 @@ public class BreakoutGame extends BasicGame
 			ball.x = windowWidth/2;
 			ball.y = windowHeight/2;
 			
-			//If the player has 0 balls left, show "dead image", and wait for input,
-			//and give the player 3 new balls.
+			//If the player has 0 balls left, show "dead image", and wait for input, and give the player 3 new balls.
 			if(ball.ballsLeft == 0){
 				isInMenu = true;
 				isDead = true;
@@ -267,17 +265,13 @@ public class BreakoutGame extends BasicGame
 //		if(input.isKeyDown(Input.KEY_LEFT) && player.x >= 0){
 //			player.x -= 1 * i;
 //		}
-		
 		player.setX(input.getMouseX() - player.getWidth()/2);
-		
 		// Checks if the right arrow key is pressed down and makes sure that we cannot move out of the right side of the window.
 //		if(input.isKeyDown(Input.KEY_RIGHT) && player.x <= windowWidth-100){
 //			player.x += 1 * i;
 //		}
 		}
 	}
-
-	
 
 	// This is used to render things, like drawing on the game window.
 	@Override
@@ -291,11 +285,13 @@ public class BreakoutGame extends BasicGame
 		//If you have 0 balls left, show dead
 		if(isDead == true){
 			dead.render(g);
+			init(gc);
 		}
 		
 		//If you press space, render all of the objects
-		if(isInMenu == false){
+		if(isInMenu == false || isDead == true){
 			isDead = false;
+			
 
 		// Level indicator on top right corner
 		g.setColor(Color.white);
@@ -312,6 +308,28 @@ public class BreakoutGame extends BasicGame
 		player.render(g);
 		ball.render(g);
 		
+//		Input input1 = gc.getInput();
+//		if(input1.isKeyPressed(Input.KEY_SPACE)){
+//			for(int i = 0; i < obstacles.length; i++){
+//				if(obstacles[i].getY() > 30 && obstacles[i].getY() < 70){
+//					brickYellow.draw(obstacles[i].getX(),obstacles[i].getY());
+//				}
+//				
+//				if(obstacles[i].getY() > 70 && obstacles[i].getY() < 110){
+//					brickGreen.draw(obstacles[i].getX(),obstacles[i].getY());
+//				}
+//				
+//				if(obstacles[i].getY() > 110 && obstacles[i].getY() < 150){
+//					brickBrick.draw(obstacles[i].getX(),obstacles[i].getY());
+//				}
+//
+//			}
+//			
+//			for(int i = 0; i < movingObstacles.length; i++){
+//					brickSteel.draw(movingObstacles[i].getX(),movingObstacles[i].getY());
+//					//g.fillRect(movingObstacles[i].x, movingObstacles[i].y, movingObstacles[i].width, movingObstacles[i].height);
+//				}
+//		}
 		
 		// Go through the position of all the obstacles and draw the appropriate image in its position.
 		//if(isDead == true){
@@ -335,15 +353,11 @@ public class BreakoutGame extends BasicGame
 				//g.fillRect(movingObstacles[i].x, movingObstacles[i].y, movingObstacles[i].width, movingObstacles[i].height);
 			}
 		}
-		
 	}
 	
 	// This is the first method that runs when you start the program.
 	public static void main(String[] args)
 	{
-		
-		
-		
 		try
 		{
 			AppGameContainer appgc;

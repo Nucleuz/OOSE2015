@@ -1,12 +1,23 @@
 package example;
 
+import java.util.Random;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public class Ball {
 	
+//	Random rx = new Random();
+//	Random ry = new Random();
+//	public int x = 650;
+//	public int y = 480;
+//
+//	int rX = rx.nextInt(x-y)+x;
+//	int rY = ry.nextInt(y-x)+y;
+	
 	public float x,y;
+
 	
 	public int width, height;
 	
