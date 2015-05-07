@@ -12,6 +12,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.sun.java.swing.plaf.windows.WindowsOptionPaneUI;
@@ -22,34 +23,33 @@ public class BreakoutGame extends BasicGame
 	private static int windowWidth = 650;
 	private static int windowHeight = 480;
 	
-	// Declaring objects of the player and ball class
+	// Declaring two variables for the position of the player.
+	private int x,y;
+	
+	// Declaring a player of the Player class.
 	private Player player;
 	private Ball ball;
-	
-	// Declaring and initializing arrays of obstacle objects.
-	private Obstacle[] obstacles = new Obstacle[91];
+	private Obstacle[] obstacles = new Obstacle[66];
 	private Obstacle[] movingObstacles = new Obstacle[2];
-<<<<<<< HEAD
 	private float brickSpeed = 2f;
 	private static boolean isInMenu = true;
 	private static boolean isDead = false;
 	private Menu menu;
 	private Dead dead;
+	//private Sound sound;
 	
-=======
-	
-	// Speed for the moving obstacles
-	private float brickSpeed = 1.5f;
->>>>>>> origin/master
 
 	// Declaring images for graphics
+	//private Image playerImg;
+	
 	private Image brickBrick;
 	private Image brickYellow;
 	private Image brickGreen;
 	private Image brickSteel;
 	//private Image Menu;
 	
-	// Constructor
+	private boolean checkCollision;
+	
 	public BreakoutGame(String gamename)
 	{
 		super(gamename);
@@ -59,25 +59,20 @@ public class BreakoutGame extends BasicGame
 	// This method runs before the game starts.
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-<<<<<<< HEAD
 		x = (windowWidth-100)/2;
 		y = windowHeight-40;
 				
 		
 		// Initializing player, ball, menu and dead
 		player = new Player(x,y,96,25);
-=======
-		
-		// Initializing player and ball
-		player = new Player(windowWidth-100/2,windowHeight-40,96,25);
->>>>>>> origin/master
 		ball = new Ball(windowWidth/2, windowHeight-150, 10, 10);
 		menu = new Menu(0,0);
 		dead = new Dead(0,0);
+		//sound = new Sound("sounds/Dong_1.wav");
 		
 		// Initializing all static obstacles and setting the width and height
 		for(int i = 0; i<obstacles.length; i++){
-			obstacles[i] = new Obstacle(0,25,50, 17);
+			obstacles[i] = new Obstacle(50,50,50, 17);
 			
 		}
 		
@@ -87,39 +82,36 @@ public class BreakoutGame extends BasicGame
 		}
 		
 		// Initializing images
-<<<<<<< HEAD
 		//playerImg = new Image("images/player.png");
 		//Menu = new Image("images/Menu.png");
-=======
->>>>>>> origin/master
 		brickBrick = new Image("images/brick_brick.png");
 		brickYellow = new Image("images/yellow_brick.png");
 		brickGreen = new Image("images/green_brick.png");
 		brickSteel = new Image("images/steel_brick.png");
 		
-		// Declaring and initializing tempX and tempY for where the first brick will spawn
-		int tempX = 0;
-		int tempY = 25;
+		checkCollision = false;
 		
-		// Sets the position of all obstacles
+		// Declaring and initializing tempX and tempY for where the first brick will spawn
+		int tempX = 50;
+		int tempY = 50;
+		
 		for(int j=0; j < obstacles.length; j++){
-			obstacles[j].x = tempX;
-			obstacles[j].y = tempY;
+			obstacles[j].setX(tempX);
+			obstacles[j].setY(tempY);
 			tempX += 50;
-			if(tempX >= 650){
-				tempX = 0;
+			if(tempX >= 600){
+				tempX = 50;
 				tempY += 17;
 			}
 		}
 		
-		// Sets the position of all moving obstacles
 		for(int j = 0; j < movingObstacles.length; j++){
 			if (j < 1 )
-				movingObstacles[j].x = windowWidth-100;
-				movingObstacles[j].y = 200;
+				movingObstacles[j].setX(windowWidth-100);
+				movingObstacles[j].setY(200);
 			if ( j > 0)
-				movingObstacles[j].x = 50;
-				movingObstacles[j].y = 200;
+				movingObstacles[j].setX(50);
+				movingObstacles[j].setY(200);
 		}
 	}
 
@@ -132,16 +124,12 @@ public class BreakoutGame extends BasicGame
 		if(input1.isKeyPressed(Input.KEY_SPACE)){
 			isInMenu = false;
 			ball.ballsLeft = 3;
-			System.out.println("pressed");
+			//sound.playAt(1, 0, 0);
 		}
 
-<<<<<<< HEAD
 
 		//Checks if the game is in Menu, if it isn't, then run all the code below.
 		if(isInMenu == false){
-=======
-		// Moves the ball in the x and y axis
->>>>>>> origin/master
 		ball.x += ball.dx;
 		ball.y += ball.dy;
 		
@@ -171,128 +159,122 @@ public class BreakoutGame extends BasicGame
 		}
 		
 		// Moves the left brick
-		movingObstacles[0].x += brickSpeed;
-		if(movingObstacles[0].x <= 0 || movingObstacles[0].x >= windowWidth-50)
+		movingObstacles[0].setX(movingObstacles[0].getX() + brickSpeed);
+		if(movingObstacles[0].getX() <= 0 || movingObstacles[0].getX() >= windowWidth-50)
 			brickSpeed *= -1;
 		
 		// Moves the right brick
-		movingObstacles[1].x -= brickSpeed;
-		if(movingObstacles[1].x <= 0 || movingObstacles[1].x >= windowWidth-50)
+		movingObstacles[1].setX(movingObstacles[1].getX() - brickSpeed);
+		if(movingObstacles[1].getX() <= 0 || movingObstacles[1].getX() >= windowWidth-50)
 			brickSpeed *= -1;
 
-		// Checks if there is a collision between the ball and obstacles
-		// It basically starts by checking if the ball is NOT hitting an obstacle, but if it does, then the "else" runs.
 		for(int j = 0; j < obstacles.length; j++){
-			if(ball.y+5 < obstacles[j].y || ball.x+5 < obstacles[j].x || ball.x-5 > obstacles[j].x+obstacles[j].width || ball.y-5 > obstacles[j].y+obstacles[j].height){
-			
+			if(ball.y+5 < obstacles[j].getY() || ball.x+5 < obstacles[j].getX() || ball.x-5 > obstacles[j].getX()+obstacles[j].getWidth() || ball.y-5 > obstacles[j].getY()+obstacles[j].getHeight()){
+				checkCollision = false;
 			} else{
-				// Checks if the ball hits the bottom of the obstacle
-				if(ball.y > obstacles[j].y+obstacles[j].height){
+				checkCollision = true;
+				if(ball.y > obstacles[j].getY()+obstacles[j].getHeight()){
 					System.out.println("Hit from below");
 					ball.dy *= -1;
 				}
 				
-				// Checks if the ball hits the top of the obstacle
-				if(ball.y < obstacles[j].y){
+				if(ball.y < obstacles[j].getY()){
 					System.out.println("Hit from above");
 					ball.dy *= -1;
 				}
 				
-				// Checks if the ball hits the left of the obstacle
-				if(ball.x < obstacles[j].x){
+				if(ball.x < obstacles[j].getX()){
 					System.out.println("Hit on the left");
 					ball.dx *= -1;
 				}
 				
-				// Checks if the ball hits the right of the obstacle
-				if(ball.x > obstacles[j].x+obstacles[j].width){
+				if(ball.x > obstacles[j].getX()+obstacles[j].getWidth()){
 					System.out.println("Hit on the right");
 					ball.dx *= -1;
 				}
-				
-				// Moves the bricks out of the window - Easy way of making it look like they are destroyed
-				obstacles[j].x = 9999;
-				obstacles[j].y = 9999;
+				obstacles[j].setX(9999);
+				obstacles[j].setY(9999);
 			}
 		}
-	
-		// Check if there is a collision between the ball and the moving obstacles
-		// It basically starts by checking if the ball is NOT hitting a moving obstacle, but if it does, then the "else" runs.
+		
 		for(int k = 0; k < movingObstacles.length; k++){
-			if(ball.y+5 < movingObstacles[k].y || ball.x+5 < movingObstacles[k].x || ball.x-5 > movingObstacles[k].x+movingObstacles[k].width || ball.y-5 > movingObstacles[k].y+movingObstacles[k].height){
-
+			if(ball.y+5 < movingObstacles[k].getY() || ball.x+5 < movingObstacles[k].getX() || ball.x-5 > movingObstacles[k].getX()+movingObstacles[k].getWidth() || ball.y-5 > movingObstacles[k].getY()+movingObstacles[k].getHeight()){
+				checkCollision = false;
 			} else{
-				// Checks if the ball hits the bottom of the obstacle
-				if(ball.y > movingObstacles[k].y+movingObstacles[k].height){
+				if(ball.y > movingObstacles[k].getY()+movingObstacles[k].getHeight()){
 					System.out.println("Hit from below");
 					ball.dy *= -1;
 				}
 				
-				// Checks if the ball hits the top of the obstacle
-				if(ball.y < movingObstacles[k].y){
+				if(ball.y < movingObstacles[k].getY()){
 					System.out.println("Hit from above");
 					ball.dy *= -1;
 				}
 				
-				// Checks if the ball hits the left of the obstacle
-				if(ball.x <= movingObstacles[k].x){
+				if(ball.x < movingObstacles[k].getX()){
 					System.out.println("Hit on the left");
 					ball.dx *= -1;
 				}
 				
-				// Checks if the ball hits the right of the obstacle
-				if(ball.x >= movingObstacles[k].x+movingObstacles[k].width+1){
+				if(ball.x > movingObstacles[k].getX()+movingObstacles[k].getWidth()){
 					System.out.println("Hit on the right");
 					ball.dx *= -1;
-				}		
+				}
 			}
 		}
-	
-		// Checks if there is a collision between the ball and the player
-		// It basically starts by checking if the ball is NOT hitting the player, but if it does, then the "else" runs.
+		
+//		if(ball.y < obstacles[j].y || ball.x < obstacles[j].x || ball.x > obstacles[j].x+obstacles[j].width || ball.y > obstacles[j].y+obstacles[j].height){
+//			ball.dy *= -1;
+//		}
+		
+//		if(ball.y1 < player.y1 || ball.x1 < player.x1 || ball.y2 > player.y2 || ball.x2 > player.x2){
+//			checkCollision = false;
+//		} else{
+//			System.out.println("Collision! !!! ");
+//			checkCollision = true;
+//			ball.dy *= -1;
+//		}
+		
 		if(ball.y+5 < player.getY() || ball.x+5 < player.getX() || ball.x-5 > player.getX()+player.getWidth() || ball.y-5 > player.getY()+player.getHeight()){
-
-		} else{
-			// Checks if the ball hits the bottom of the player
-			if(ball.y > player.getY()+player.getHeight()){
-				System.out.println("Hit from below");
-				ball.dy *= -1;
-			}
-			
-			// Checks if the ball hits the top of the player
-			if(ball.y < player.getY()){
-				System.out.println("Hit from above");
-				ball.dy *= -1;
-			}
-			
-			// Checks if the ball hits the left of the player
-			if(ball.x <= player.getX()){
-				System.out.println("Hit on the left");
-				ball.dx *= -1;
-			}
-			
-			// Checks if the ball hits the right of the player
-			if(ball.x > player.getX()+player.getWidth()){
-				System.out.println("Hit on the right");
-				ball.dx *= -1;
-			}	
+		checkCollision = false;
+	} else{
+		if(ball.y > player.getY()+player.getHeight()){
+			System.out.println("Hit from below");
+			ball.dy *= -1;
 		}
 		
-		// Used for handling inputs, such as keyboard, mouse and controller inputs.
-		Input input = gc.getInput();
+		if(ball.y < player.getY()){
+			System.out.println("Hit from above");
+			ball.dy *= -1;
+		}
 		
-<<<<<<< HEAD
-		player.x = input.getMouseX() - player.width/2;
+		if(ball.x < player.getX()){
+			System.out.println("Hit on the left");
+			ball.dx *= -1;
+		}
+		
+		if(ball.x > player.getX()+player.getWidth()){
+			System.out.println("Hit on the right");
+			ball.dx *= -1;
+		}
+	}
+
+		Input input = gc.getInput();
+//		ball.x = input.getMouseX();
+//		ball.y = input.getMouseY();
+		
+		// Checks if the left arrow key is pressed down and makes sure that we cannot move out of the left side of the window.
+//		if(input.isKeyDown(Input.KEY_LEFT) && player.x >= 0){
+//			player.x -= 1 * i;
+//		}
+		
+		player.setX(input.getMouseX() - player.getWidth()/2);
 		
 		// Checks if the right arrow key is pressed down and makes sure that we cannot move out of the right side of the window.
 //		if(input.isKeyDown(Input.KEY_RIGHT) && player.x <= windowWidth-100){
 //			player.x += 1 * i;
 //		}
 		}
-=======
-		// Makes sure that the player can control the paddle with the mouse.
-		player.setX(input.getMouseX() - player.getWidth()/2);
->>>>>>> origin/master
 	}
 
 	
@@ -314,69 +296,48 @@ public class BreakoutGame extends BasicGame
 		//If you press space, render all of the objects
 		if(isInMenu == false){
 			isDead = false;
+
 		// Level indicator on top right corner
 		g.setColor(Color.white);
-		g.drawString("Level 1", windowWidth-85, 3);
+		g.drawString("Level 1", windowWidth-85, 10);
 
 		// Set background color
 		g.setBackground(Color.lightGray);
 		
 		// Draws the balls left
-		g.drawString("Balls left: " + ball.ballsLeft, 0+10, 3);
+		g.drawString("Balls left: " + ball.ballsLeft, windowWidth/2-60, 10);
 		
-		// Call the render method in the player class.
+		// Draw the player image in the player's position
+		//playerImg.draw(player.x,player.y);
 		player.render(g);
-<<<<<<< HEAD
 		ball.render(g);
-		// Set color of ball and fill it with fillOval
-		//g.setColor(Color.red);
-		//g.fillOval(ball.pos.getX()-10,ball.pos.getY()-20,20,20);
-		//g.fillOval(ball.x-5,ball.y-5,ball.widthSize,ball.heightSize);
 		
-		// Use to draw a rectangle on player... Used it for testing collision.
-		//g.fillRect(player.x, player.y, player.width, player.height);
-=======
-		
-		// Call the render method in the ball class.
-		ball.render(g);		
->>>>>>> origin/master
 		
 		// Go through the position of all the obstacles and draw the appropriate image in its position.
+		//if(isDead == true){
 		for(int i = 0; i < obstacles.length; i++){
-			if(obstacles[i].y >= 0 && obstacles[i].y < 70){
-				brickYellow.draw(obstacles[i].x,obstacles[i].y);
+			if(obstacles[i].getY() > 30 && obstacles[i].getY() < 70){
+				brickYellow.draw(obstacles[i].getX(),obstacles[i].getY());
 			}
 			
-			if(obstacles[i].y > 50 && obstacles[i].y < 110){
-				brickGreen.draw(obstacles[i].x,obstacles[i].y);
+			if(obstacles[i].getY() > 70 && obstacles[i].getY() < 110){
+				brickGreen.draw(obstacles[i].getX(),obstacles[i].getY());
 			}
 			
-			if(obstacles[i].y > 84 && obstacles[i].y < 150){
-				brickBrick.draw(obstacles[i].x,obstacles[i].y);
+			if(obstacles[i].getY() > 110 && obstacles[i].getY() < 150){
+				brickBrick.draw(obstacles[i].getX(),obstacles[i].getY());
+			}
+
+		}
+		
+		for(int i = 0; i < movingObstacles.length; i++){
+				brickSteel.draw(movingObstacles[i].getX(),movingObstacles[i].getY());
+				//g.fillRect(movingObstacles[i].x, movingObstacles[i].y, movingObstacles[i].width, movingObstacles[i].height);
 			}
 		}
 		
-		// Go through the position of all the moving obstacles and draw the appropriate image in its position.
-		for(int i = 0; i < movingObstacles.length; i++){
-				brickSteel.draw(movingObstacles[i].x,movingObstacles[i].y);
-<<<<<<< HEAD
-				//g.fillRect(movingObstacles[i].x, movingObstacles[i].y, movingObstacles[i].width, movingObstacles[i].height);
-			}
-=======
->>>>>>> origin/master
-		}
 	}
 	
-//	public void Menu() throws SlickException{
-//			
-//			System.out.println("Show Menu!");
-//		
-//	}
-////
-////	public void Dead(){
-////		System.out.println("Your are dead!");
-////		
-////	}
 	// This is the first method that runs when you start the program.
 	public static void main(String[] args)
 	{
@@ -389,7 +350,6 @@ public class BreakoutGame extends BasicGame
 			appgc = new AppGameContainer(new BreakoutGame("Breakout by Hans & Mikkel"));
 			appgc.setDisplayMode(windowWidth, windowHeight, false);
 			appgc.setTargetFrameRate(120);
-			appgc.setShowFPS(false);
 			appgc.start();
 		}
 		catch (SlickException ex)
