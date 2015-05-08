@@ -1,9 +1,12 @@
 package example;
 
 public class Obstacle{
+	
+	// Declaring a few variables
 	private float x, y;
 	private int width, height;
 
+	// Constructer
 	public Obstacle(int x, int y, int width, int height) {
 		this.setX(x);
 		this.setY(y);
@@ -16,7 +19,7 @@ public class Obstacle{
 			return x;
 		}
 
-		public void setX(int x) {
+		public void setX(float x) {
 			this.x = x;
 		}
 
@@ -24,7 +27,7 @@ public class Obstacle{
 			return y;
 		}
 
-		public void setY(int y) {
+		public void setY(float y) {
 			this.y = y;
 		}
 
@@ -32,19 +35,7 @@ public class Obstacle{
 			return width;
 		}
 
-		public void setWidth(int width) {
-			this.width = width;
-		}
-
 		public int getHeight() {
 			return height;
-		}
-
-		public void setX(float x) {
-			this.x = x;
-		}
-
-		public void setY(float y) {
-			this.y = y;
 		}
 }

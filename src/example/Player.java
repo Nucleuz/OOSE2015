@@ -8,10 +8,8 @@ import org.newdawn.slick.SlickException;
 public class Player{
 
 	// Declaring a few variables
-	private int x;
-	private int y;
-	private int width;
-	private int height;
+	private int x, y, width, height;
+
 	private Image playerImg;
 
 	// Constructer
@@ -47,10 +45,6 @@ public class Player{
 
 	public int getWidth() {
 		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
 	}
 
 	public int getHeight() {
