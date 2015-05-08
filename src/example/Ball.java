@@ -6,14 +6,6 @@ import org.newdawn.slick.SlickException;
 
 public class Ball {
 	
-//	Random rx = new Random();
-//	Random ry = new Random();
-//	public int x = 650;
-//	public int y = 480;
-//
-//	int rX = rx.nextInt(x-y)+x;
-//	int rY = ry.nextInt(y-x)+y;
-	
 	// Declaring a few variables
 	public float x,y;
 	
@@ -41,5 +33,5 @@ public class Ball {
 	// render method for drawing the image of the ball.
 	public void render(Graphics g) throws SlickException{
 		ballImg.draw(x-5,y-5);
-	}
+	}	
 }
