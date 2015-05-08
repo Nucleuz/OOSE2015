@@ -79,8 +79,13 @@ public class BreakoutGame extends BasicGame
 		brickGreen = new Image("images/green_brick.png");
 		brickSteel = new Image("images/steel_brick.png");
 		
+		spawnObstacles();
+	}
+	
+	public void spawnObstacles(){
+
+		if(isDead == false || isInMenu == true){
 		// Declaring and initializing tempX and tempY for where the first brick will spawn
-		//if(isDead == false || isInMenu == true){
 		int tempX = 0;
 		int tempY = 25;
 		
@@ -105,15 +110,16 @@ public class BreakoutGame extends BasicGame
 				movingObstacles[j].setY(200);
 		}
 	}
+	}
 	
 	// This method runs every frame (just like Unity's Update method)
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException {
 		
-		//GameContainer gc1;
 		Input input1 = gc.getInput();
 		if(input1.isKeyPressed(Input.KEY_SPACE)){
 			isInMenu = false;
+			//isDead = false;
 			ball.ballsLeft = 3;
 			//sound.playAt(1, 0, 0);
 		}
@@ -141,12 +147,7 @@ public class BreakoutGame extends BasicGame
 				ball.x = windowWidth/2;
 				ball.y = windowHeight/2;
 				
-				//If the player has 0 balls left, show "dead image", and wait for input, and give the player 3 new balls.
-				if(ball.ballsLeft == 0){
-					isInMenu = true;
-					isDead = true;
-					ball.ballsLeft = 3;
-				}
+				
 			}
 			
 			// Moves the left moving obstacle
@@ -193,8 +194,13 @@ public class BreakoutGame extends BasicGame
 					obstacles[j].setX(9999);
 					obstacles[j].setY(9999);
 				}
+				//If the player has 0 balls left, show "dead image", and wait for input, and give the player 3 new balls.
+				if(ball.ballsLeft == 0){
+					isInMenu = true;
+					isDead = true;
+					ball.ballsLeft = 3;
+				}
 			}
-			
 			// Check if there is a collision between the ball and the moving obstacles
 			// It basically starts by checking if the ball is NOT hitting a moving obstacle, but if it does, then the "else" runs.
 			for(int k = 0; k < movingObstacles.length; k++){
@@ -275,9 +281,9 @@ public class BreakoutGame extends BasicGame
 		}
 		
 		//If you have 0 balls left, show dead
-		if(isDead == true){
+		if(isDead == true && isInMenu == true){
 			dead.render(g);
-			init(gc);
+			spawnObstacles();
 		}
 		
 		//If you press space, render all of the objects
@@ -301,31 +307,7 @@ public class BreakoutGame extends BasicGame
 		// Call the render method in the ball class.
 		ball.render(g);	
 		
-//		Input input1 = gc.getInput();
-//		if(input1.isKeyPressed(Input.KEY_SPACE)){
-//			for(int i = 0; i < obstacles.length; i++){
-//				if(obstacles[i].getY() > 30 && obstacles[i].getY() < 70){
-//					brickYellow.draw(obstacles[i].getX(),obstacles[i].getY());
-//				}
-//				
-//				if(obstacles[i].getY() > 70 && obstacles[i].getY() < 110){
-//					brickGreen.draw(obstacles[i].getX(),obstacles[i].getY());
-//				}
-//				
-//				if(obstacles[i].getY() > 110 && obstacles[i].getY() < 150){
-//					brickBrick.draw(obstacles[i].getX(),obstacles[i].getY());
-//				}
-//
-//			}
-//			
-//			for(int i = 0; i < movingObstacles.length; i++){
-//					brickSteel.draw(movingObstacles[i].getX(),movingObstacles[i].getY());
-//					//g.fillRect(movingObstacles[i].x, movingObstacles[i].y, movingObstacles[i].width, movingObstacles[i].height);
-//				}
-//		}
-		
 		// Go through the position of all the obstacles and draw the appropriate image in its position.
-		//if(isDead == true){
 		for(int i = 0; i < obstacles.length; i++){
 			if(obstacles[i].getY() >= 0 && obstacles[i].getY() < 70){
 				brickYellow.draw(obstacles[i].getX(),obstacles[i].getY());
