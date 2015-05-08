@@ -35,8 +35,6 @@ public class BreakoutGame extends BasicGame
 	private static boolean isDead = false;
 	private Menu menu;
 	private Dead dead;
-	//private Sound sound;
-	
 	
 	private Random rnd;
 	private int randomX;
@@ -46,7 +44,6 @@ public class BreakoutGame extends BasicGame
 	private Image brickYellow;
 	private Image brickGreen;
 	private Image brickSteel;
-	//private Image Menu;
 	
 	// Constructor
 	public BreakoutGame(String gamename)
@@ -76,7 +73,6 @@ public class BreakoutGame extends BasicGame
 		}
 		
 		// Initializing images
-		//Menu = new Image("images/Menu.png");
 		brickBrick = new Image("images/brick_brick.png");
 		brickYellow = new Image("images/yellow_brick.png");
 		brickGreen = new Image("images/green_brick.png");
@@ -125,7 +121,6 @@ public class BreakoutGame extends BasicGame
 			isInMenu = false;
 			isDead = false;
 			ball.ballsLeft = 3;
-			//sound.playAt(1, 0, 0);
 		}
 
 
