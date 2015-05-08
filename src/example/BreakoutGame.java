@@ -1,5 +1,6 @@
 package example;
 
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,6 +37,9 @@ public class BreakoutGame extends BasicGame
 	private Dead dead;
 	//private Sound sound;
 	
+	
+	private Random rnd;
+	private int randomX;
 
 	// Declaring images for graphics
 	private Image brickBrick;
@@ -54,10 +58,10 @@ public class BreakoutGame extends BasicGame
 	// This method runs before the game starts.
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-				
+		
 		// Initializing player, ball, menu and dead
 		player = new Player((windowWidth-100)/2,windowHeight-40,96,25);
-		ball = new Ball(windowWidth/2, windowHeight-150, 10, 10);
+		ball = new Ball(randomX, windowHeight/2, 10, 10);
 		menu = new Menu(0,0);
 		dead = new Dead(0,0);
 		//sound = new Sound("sounds/Dong_1.wav");
@@ -115,7 +119,8 @@ public class BreakoutGame extends BasicGame
 	// This method runs every frame (just like Unity's Update method)
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException {
-		
+		rnd = new Random();
+		randomX = 125+rnd.nextInt((525-125)+1);
 		Input input1 = gc.getInput();
 		if(input1.isKeyPressed(Input.KEY_SPACE)){
 			isInMenu = false;
@@ -144,7 +149,7 @@ public class BreakoutGame extends BasicGame
 			// Makes sure that we decrease the "Balls left: " each time the player misses the ball
 			if(ball.y > windowHeight + 100){
 				ball.ballsLeft--;
-				ball.x = windowWidth/2;
+				ball.x = randomX;
 				ball.y = windowHeight/2;
 				
 				
