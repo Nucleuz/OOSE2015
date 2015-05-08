@@ -124,7 +124,7 @@ public class BreakoutGame extends BasicGame
 		Input input1 = gc.getInput();
 		if(input1.isKeyPressed(Input.KEY_SPACE)){
 			isInMenu = false;
-			//isDead = false;
+			isDead = false;
 			ball.ballsLeft = 3;
 			//sound.playAt(1, 0, 0);
 		}
@@ -201,7 +201,7 @@ public class BreakoutGame extends BasicGame
 				}
 				//If the player has 0 balls left, show "dead image", and wait for input, and give the player 3 new balls.
 				if(ball.ballsLeft == 0){
-					isInMenu = true;
+					isInMenu = false;
 					isDead = true;
 					ball.ballsLeft = 3;
 				}
@@ -286,15 +286,15 @@ public class BreakoutGame extends BasicGame
 		}
 		
 		//If you have 0 balls left, show dead
-		if(isDead == true && isInMenu == true){
+//		if(ball.ballsLeft == 0 && isDead == true){
+		if(isDead == true){
 			dead.render(g);
 			spawnObstacles();
 		}
 		
 		//If you press space, render all of the objects
-		if(isInMenu == false || isDead == true){
-			isDead = false;
-			
+		if(isInMenu == false && isDead == false){
+			//isDead = false;
 
 		// Level indicator on top right corner
 		g.setColor(Color.white);
