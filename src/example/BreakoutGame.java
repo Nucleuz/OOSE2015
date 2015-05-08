@@ -58,7 +58,6 @@ public class BreakoutGame extends BasicGame
 	// This method runs before the game starts.
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-		
 		// Initializing player, ball, menu and dead
 		player = new Player((windowWidth-100)/2,windowHeight-40,96,25);
 		ball = new Ball(randomX, windowHeight/2, 10, 10);
@@ -124,7 +123,7 @@ public class BreakoutGame extends BasicGame
 		Input input1 = gc.getInput();
 		if(input1.isKeyPressed(Input.KEY_SPACE)){
 			isInMenu = false;
-			//isDead = false;
+			isDead = false;
 			ball.ballsLeft = 3;
 			//sound.playAt(1, 0, 0);
 		}
@@ -286,14 +285,14 @@ public class BreakoutGame extends BasicGame
 		}
 		
 		//If you have 0 balls left, show dead
-		if(isDead == true && isInMenu == true){
+		if(isDead == true){
 			dead.render(g);
 			spawnObstacles();
 		}
 		
 		//If you press space, render all of the objects
-		if(isInMenu == false || isDead == true){
-			isDead = false;
+		if(isInMenu == false && isDead == false){
+			//isDead = false;
 			
 
 		// Level indicator on top right corner
